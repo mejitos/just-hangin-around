@@ -137,7 +137,7 @@ def clear_screen():
 
 
 words = []
-chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö']
+# chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z', 'Å', 'Ä', 'Ö']
 guesses = []
 strikes = 0
 win = False
@@ -190,19 +190,26 @@ while True:
             for i in range(len(word)):
                 if guess == word[i]:
                     empty_word[i] = guess
-            chars.remove(guess)
+            # chars.remove(guess)
             guesses.append(guess)
         else:
             print('nope')
             print()
             input('press enter to continue')
-            chars.remove(guess)
+            # chars.remove(guess)
             guesses.append(guess)
             strikes += 1
     else:
-        print('invalid input')
-        print()
-        input('press enter to continue')
+        if guess in guesses:
+            print('you have guessed that already')
+            print()
+            input('press enter to continue')
+        else:
+            print('nope')
+            print()
+            input('press enter to continue')
+            guesses.append(guess)
+            strikes += 1
 
 # Game ending
 if win:

@@ -141,7 +141,7 @@ empty_word = []
 inputs = []
 words = []
 guesses = []
-remaining_words = []
+# remaining_words = []
 indexes = []
 histogram = {}
 strikes = 0
@@ -197,7 +197,7 @@ while True:
             guessed_chars += 1
     if word_length - guessed_chars <= 3:
         break
-    if len(remaining_words) >= 1 and len(remaining_words) <= 4:
+    if len(words) >= 1 and len(words) <= 4:
         break
 
     # Start guessing with the most common character
@@ -208,6 +208,7 @@ while True:
         if histogram[k] == max_val:
             the_char = k
             guesses.append(the_char)
+            break
 
     # Computer makes guess
     clear_screen()
@@ -217,6 +218,7 @@ while True:
     print(' '.join(empty_word))
     print()
     print(f'does the word have character "{the_char}"? > ')
+
     # TODO: Validate the yes or no
     answer = input('yes / no > ')
     print()
@@ -231,13 +233,16 @@ while True:
             print(' '.join(empty_word))
             print(' '.join(inputs))
             print()
+
             # TODO: Validation here to confirm the char placement?
             index = int(input('where the character is on the word? > '))
             indexes.append(index - 1)
             indexes.sort()
             print()
+
             # TODO: Validation here to confirm the char placement?
             empty_word[index - 1] = the_char
+
             clear_screen()
             print('~~~~~ H _ N G M _ N ~~~~~')
             print()
@@ -246,6 +251,7 @@ while True:
             print(' '.join(inputs))
             print()
             print(f'is that all the character {the_char}´s in the word?')
+
             # TODO: Validation here
             answer = input('yes / no > ')
             if answer ==  'no':
@@ -255,31 +261,21 @@ while True:
                 break
 
         # Check for all the words that have guessed characters on
-        # and change the list of remaining words accordingly
-        if len(remaining_words) == 0:
-            for word in words:
-                for i in indexes:
-                    if word[i] == empty_word[i]:
-                        if i == indexes[len(indexes) - 1]:
-                            remaining_words.append(word)
-                        pass
-                    else:
-                        break
-        else:
-            for word in reversed(remaining_words):
-                for i in indexes:
-                    if word[i] == empty_word[i]:
-                        pass
-                    else:
-                        remaining_words.remove(word)
-                        break
+        # and change the list of remaining words accordingly        
+        for word in reversed(words):
+            for i in indexes:
+                if word[i] == empty_word[i]:
+                    pass
+                else:
+                    words.remove(word)
+                    break
 
         # Make a new histogram of all the characters of the remaining words
         histogram = {}
-        for word in remaining_words:
+        for word in words:
             for char in word:
                 if char in guesses:
-                    break
+                    pass
                 elif char not in histogram:
                     histogram[char] = 1
                 else:
@@ -287,21 +283,16 @@ while True:
     
     # Eliminate all the words which has wrongly guessed char in them
     else:
-        if len(remaining_words) == 0:
-            for word in words:
-                if the_char not in word:
-                    remaining_words.append(word)
-        else:
-            for word in reversed(remaining_words):
-                if the_char in word:
-                    remaining_words.remove(word)
+        for word in reversed(words):
+            if the_char in word:
+                words.remove(word)
         
         # Make a new histogram of all the characters of the remaining words
         histogram = {}
-        for word in remaining_words:
+        for word in words:
             for char in word:
                 if char in guesses:
-                    break
+                    pass
                 elif char not in histogram:
                     histogram[char] = 1
                 else:
@@ -322,7 +313,7 @@ while True:
     if strikes == 6:
         break
     
-    guess = remaining_words[random.randint(0, len(remaining_words) - 1)]
+    guess = words[random.randint(0, len(words) - 1)]
 
     clear_screen()
     print('~~~~~ H _ N G M _ N ~~~~~')
@@ -334,12 +325,12 @@ while True:
     if answer == 'yes':
         break
     else:
-        remaining_words.remove(guess)
+        words.remove(guess)
         strikes += 1
-        if strikes == 6 or len(remaining_words) == 0:
+        if strikes == 6 or len(words) == 0:
             break
 
-if strikes == 6 or len(remaining_words) == 0:
+if strikes == 6 or len(words) == 0:
     print('player wins')
 else:
     print('computer wins!')
