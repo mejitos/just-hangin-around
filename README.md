@@ -32,13 +32,14 @@ Added script to use for testing the algorithm I have and by using that, I'm goin
 - Check if guessed characters >= 4 characters, if yes, break the loop
 - Check if number of remainig words is between 1-3, if yes, break the loop
 - If guessed character (e.g. 'A') is in the secret word:
-⋅⋅- You need to tell the indexes of all the characters are in the secret word e.g. "_ A _ A _ A".
-⋅⋅- Algorithm iterates through the remaining words removing words that doesn't have guessed character on given indexes
+⋅⋅* You need to tell the indexes of all the characters are in the secret word e.g. "_ A _ A _ A".
+⋅⋅* Algorithm iterates through the remaining words removing words that doesn't have guessed character on given indexes
 ⋅⋅- Algorithm iterates through the characters of the remaining words making a histogram out of them which it uses to see the frequencies of the characters. This time taking in to account  the characters in the "guessed_chars" list
 - Else:
-⋅⋅- Algorithm will iterate through the remaining words removing words that doesn't have the guessed character
-⋅⋅- Algorithm iterates through the remaining words removing words that doesn't have guessed character on given indexes
-⋅⋅- Algorithm iterates through the characters of the remaining words making a histogram out of them which it uses to see the frequencies of the characters. This time taking in to account  the characters in the "guessed_chars" list
+⋅⋅* Algorithm will iterate through the remaining words removing words that doesn't have the guessed character
+⋅⋅* Algorithm iterates through the remaining words removing words that doesn't have guessed character on given indexes
+⋅⋅* Algorithm iterates through the characters of the remaining words making a histogram out of them which it uses to see the frequencies of the characters. This time taking in to account  the characters in the "guessed_chars" list
+
 **Main loop ends**
 
 **Ending**
