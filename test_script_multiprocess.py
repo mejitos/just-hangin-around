@@ -70,18 +70,14 @@ def let_it_hang(words, wordset, success, fail):
             max_val = max(histogram.values())
             the_char = ''
 
-            for k in histogram:
-                if histogram[k] == max_val:
-                    the_char = k.upper()
+            for key in histogram:
+                if histogram[key] == max_val:
+                    the_char = key
+                    del histogram[key]
                     guesses.append(the_char)
                     break
 
             if the_char in the_word:
-                answer = 'yes'
-            else:
-                answer = 'no'
-
-            if answer == 'yes':
                 for i in range(0, len(the_word)):
                     if the_word[i] == the_char:
                         empty_word[i] = the_char
@@ -96,36 +92,24 @@ def let_it_hang(words, wordset, success, fail):
                         if word[i] == empty_word[i]:
                             pass
                         else:
+                            for char in word:
+                                if char in guesses:
+                                    pass
+                                else:
+                                    histogram[char] -= 1
                             remaining_words.remove(word)
                             break
-
-                # Make a new histogram of all the characters of the remaining words
-                histogram = {}
-                for word in remaining_words:
-                    for char in word:
-                        if char in guesses:
-                            pass
-                        elif char not in histogram:
-                            histogram[char] = 1
-                        else:
-                            histogram[char] += 1
                 
             # Eliminate all the words which has wrongly guessed char in them
             else:
                 for word in reversed(remaining_words):
                     if the_char in word:
+                        for char in word:
+                            if char in guesses:
+                                pass
+                            else:
+                                histogram[char] -= 1
                         remaining_words.remove(word)
-                
-                # Make a new histogram of all the characters of the remaining words
-                histogram = {}
-                for word in remaining_words:
-                    for char in word:
-                        if char in guesses:
-                            pass
-                        elif char not in histogram:
-                            histogram[char] = 1
-                        else:
-                            histogram[char] += 1
 
                 strikes += 1
 
@@ -140,24 +124,19 @@ def let_it_hang(words, wordset, success, fail):
             guess = remaining_words[random.randint(0, len(remaining_words) - 1)]
 
             if the_word == guess:
-                answer = 'yes'
-            else:
-                answer = 'no'
-
-            if answer == 'yes':
                 break
             else:
                 remaining_words.remove(guess)
                 strikes += 1
                 if strikes == 6 or len(remaining_words) == 0:
-                    break
+                    break 
 
         if strikes == 6 or len(remaining_words) == 0:
             fail.value += 1
-            # print('Computer loses')
+            print('Computer loses')
         else:
             success.value += 1
-            # print('Computer wins!')
+            print('Computer wins!')
 
 
 if __name__ == '__main__':
@@ -203,14 +182,14 @@ if __name__ == '__main__':
     print()
     print(f'CPUS: {os.cpu_count()}')
 
-    for wordset in wordsets:
-        process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
-        processes.append(process)
+    # for wordset in wordsets:
+    #     process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
+    #     processes.append(process)
 
-        process.start()
+    #     process.start()
     
-    for process in processes:
-        process.join()
+    # for process in processes:
+    #     process.join()
 
     # for i in range(3):
     #     process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
@@ -221,7 +200,7 @@ if __name__ == '__main__':
     # for process in processes:
     #     process.join()
     
-    # let_it_hang(all_words, wordset, success, fail)
+    let_it_hang(all_words, wordset, success, fail)
 
     # with open('fails.txt', 'w', encoding='utf-8') as f:
     #     for word in fail_words:
