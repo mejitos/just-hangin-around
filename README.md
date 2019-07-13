@@ -15,6 +15,31 @@ This is the "normal" version of the game. Game gets a random word from the datab
 When using this script, you are supposed to write your word on a piece of paper and after that, the script tries to guess your word. It asks for characters and their places in the string and you can input the characters with numbers.
 
 # Testing script
-Added script to use for testing the algorithm I have and by using that, I'm going to make my algorithm better. For now as it simplest state it makes guesses only based on frequency of characters in the words and still makes right guesses ~80% of the time.
+Added script to use for testing the algorithm I have and by using that, I'm going to try to make my algorithm better. Theres two scripts now, one "basic" version and other that uses multiprocessing. I'm trying to make my algorithm better one word length at a time, but exectuing test script for 5.6k words with 8 characters in length, it would take over 10 minutes to execute so that isn't that helpful. With simple multiprocessing I get down to 3-4 minutes. Script will load all the words from the wordlist and make them into wordsets which have maximum of 1000 words. Each of these wordsets will be assigned its own process.
 
-To use the script, you only need to have list of words and then you input the number of games you want to play and go at it.
+## The Algorithm
+**Ruleset**
+- You can have five strikes before game over, sixth strike == game over
+- You can guess the secret word as many times as you want but wrong guess gives strikes += 1
+
+**You choose your word's length. If your secret word is "banana", there is six characters so your word length is six**
+- Algorithm will choose remaining words only with words that has six characters
+- At this poin algorithm will only know word "_ _ _ _ _ _ "
+- Algorithm iterates through the characters of the remaining words making a historgram out of them which it uses to see the frequencies of the characters
+
+**Main loop**
+- Algorithm will make a guess with the most common character and appends it to "guessed_chars" list
+- Check if guessed characters >= 4 characters, if yes, break the loop
+- Check if number of remainig words is between 1-3, if yes, break the loop
+- If guessed character (e.g. 'A') is in the secret word:
+⋅⋅- You need to tell the indexes of all the characters are in the secret word e.g. "_ A _ A _ A".
+⋅⋅- Algorithm iterates through the remaining words removing words that doesn't have guessed character on given indexes
+⋅⋅- Algorithm iterates through the characters of the remaining words making a histogram out of them which it uses to see the frequencies of the characters. This time taking in to account  the characters in the "guessed_chars" list
+- Else:
+⋅⋅- Algorithm will iterate through the remaining words removing words that doesn't have the guessed character
+⋅⋅- Algorithm iterates through the remaining words removing words that doesn't have guessed character on given indexes
+⋅⋅- Algorithm iterates through the characters of the remaining words making a histogram out of them which it uses to see the frequencies of the characters. This time taking in to account  the characters in the "guessed_chars" list
+**Main loop ends**
+
+**Ending**
+- Algorithm will make guess by choosing random word from the remaining words
