@@ -203,14 +203,14 @@ if __name__ == '__main__':
     print()
     print(f'CPUS: {os.cpu_count()}')
 
-    # for wordset in wordsets:
-    #     process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
-    #     processes.append(process)
+    for wordset in wordsets:
+        process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
+        processes.append(process)
 
-    #     process.start()
+        process.start()
     
-    # for process in processes:
-    #     process.join()
+    for process in processes:
+        process.join()
 
     # for i in range(3):
     #     process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
@@ -221,7 +221,7 @@ if __name__ == '__main__':
     # for process in processes:
     #     process.join()
     
-    let_it_hang(all_words, wordset, success, fail)
+    # let_it_hang(all_words, wordset, success, fail)
 
     # with open('fails.txt', 'w', encoding='utf-8') as f:
     #     for word in fail_words:

@@ -1,4 +1,5 @@
 .vscode
+__pycache__
 filter.txt
 scrapin.py
 sprites
