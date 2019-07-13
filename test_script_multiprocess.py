@@ -1,6 +1,7 @@
 import random
 import os
 import time
+import csv
 from multiprocessing import Process, current_process, Array, Value
 
 
@@ -35,9 +36,9 @@ def let_it_hang(words, wordset, success, fail):
         empty_word = ['_' for i in range(len(the_word))]
         guesses = []
         remaining_words = []
-        indexes = []
         histogram = {}
         strikes = 0
+        indexes = []
 
         # Make a histogram of all the letters of the selected words in database
         for word in reversed(words):
@@ -53,16 +54,15 @@ def let_it_hang(words, wordset, success, fail):
 
         # -------------- MAIN GAME LOOP STARTS HERE -----------------
         while strikes < 6:
+
+            # print(the_word)
+            # print(strikes)
+            # print(histogram)
+
             # Check for guessed characters and remaining words
             # if guessed characters == 4 or more => break
-            # if remaining words == 1-4 => break
-            guessed_chars = 0
-            for c in empty_word:
-                if c != '_':
-                    guessed_chars += 1
-            if len(the_word) - guessed_chars <= 3:
-                break
-            if len(remaining_words) >= 1 and len(remaining_words) <= 4:
+            # if len(remaining_words) >= 1 and len(remaining_words) <= 3:
+            if len(remaining_words) == 1:
                 break
 
             # collections.Counter => most_common
@@ -82,15 +82,23 @@ def let_it_hang(words, wordset, success, fail):
                     if the_word[i] == the_char:
                         empty_word[i] = the_char
                         indexes.append(i)
-                indexes.sort()
 
-                # Check for all the words that have guessed characters on
-                # indexes of the indexes list and change the list of 
-                # remaining words accordingly
                 for word in reversed(remaining_words):
+                    empty_word_check = [c for c in empty_word if c is not '_']
+                    word_check = [c for c in word]
+
                     for i in indexes:
                         if word[i] == empty_word[i]:
-                            pass
+                                empty_word_check.remove(word[i])
+                                word_check.remove(word[i])
+                                if len(empty_word_check) == 0 and word[i] in word_check:
+                                    for char in word:
+                                        if char in guesses:
+                                            pass
+                                        else:
+                                            histogram[char] -= 1
+                                    remaining_words.remove(word)
+                                    break
                         else:
                             for char in word:
                                 if char in guesses:
@@ -98,8 +106,8 @@ def let_it_hang(words, wordset, success, fail):
                                 else:
                                     histogram[char] -= 1
                             remaining_words.remove(word)
-                            break
-                
+                            break 
+
             # Eliminate all the words which has wrongly guessed char in them
             else:
                 for word in reversed(remaining_words):
@@ -112,6 +120,13 @@ def let_it_hang(words, wordset, success, fail):
                         remaining_words.remove(word)
 
                 strikes += 1
+            
+            # print()
+            # print(the_char)
+            # print(guesses)
+            # print(remaining_words)
+            # print(histogram)
+            # input()
 
         # -------------------- MAIN LOOP ENDS HERE -------------------------
 
@@ -121,7 +136,8 @@ def let_it_hang(words, wordset, success, fail):
                 break
             
             # Making guess by randomly choosing word from remaining words
-            guess = remaining_words[random.randint(0, len(remaining_words) - 1)]
+            # guess = remaining_words[random.randint(0, len(remaining_words) - 1)]
+            guess = remaining_words[0]
 
             if the_word == guess:
                 break
@@ -133,16 +149,25 @@ def let_it_hang(words, wordset, success, fail):
 
         if strikes == 6 or len(remaining_words) == 0:
             fail.value += 1
+            row = []
+            row.append(the_word)
+            row.append(guesses)
+            row.append(remaining_words)
+            row.append(histogram)
+            with open('fails.csv', 'a', encoding='utf-8') as f:
+                csv_writer = csv.writer(f)
+                csv_writer.writerow(row)
             print('Computer loses')
         else:
             success.value += 1
             print('Computer wins!')
+    
 
 
 if __name__ == '__main__':
     # clear_screen()
 
-    word_length = 8
+    word_length = 6
     all_words = []
     wordsets = []
     wordset = []
@@ -182,14 +207,14 @@ if __name__ == '__main__':
     print()
     print(f'CPUS: {os.cpu_count()}')
 
-    # for wordset in wordsets:
-    #     process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
-    #     processes.append(process)
+    for wordset in wordsets:
+        process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
+        processes.append(process)
 
-    #     process.start()
+        process.start()
     
-    # for process in processes:
-    #     process.join()
+    for process in processes:
+        process.join()
 
     # for i in range(3):
     #     process = Process(target=let_it_hang, args=(all_words, wordset, success, fail))
@@ -200,11 +225,10 @@ if __name__ == '__main__':
     # for process in processes:
     #     process.join()
     
-    let_it_hang(all_words, wordset, success, fail)
-
-    # with open('fails.txt', 'w', encoding='utf-8') as f:
-    #     for word in fail_words:
-    #         f.write(word + '\n')
+    # sample of one wordset
+    # failed words of 8 chars
+    # wordset = ['HUOVUTUS', 'HYLLYKKÖ', 'HYPPYNEN', 'YÖTÖN YÖ', 'PYÖRÖPUU', 'PÖLLÖNEN', 'HARJANNE', 'MUUNTELU', 'KOLMONEN', 'ROPPONEN']
+    # let_it_hang(all_words, wordset, success, fail)
 
     end_time = time.time()
 
@@ -215,3 +239,4 @@ if __name__ == '__main__':
     print(f'Played {len(all_words)} games')
     print(f'Computer succeeded {success.value} times')
     print(f'Computer failed {fail.value} times')
+    print(f'Success rate: {success.value / len(all_words) * 100:.2f}%')

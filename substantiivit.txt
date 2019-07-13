@@ -41905,7 +41905,6 @@ prätkä
 pröystäily
 Psalmit
 psalttari
-Psalttari
 pseudoefedriini
 pseudografi
 pseudonyymi
@@ -47831,7 +47830,6 @@ salpapensas
 salpietari
 salsa
 salsakastike
-Salttari
 salttari
 saluki
 salusiini

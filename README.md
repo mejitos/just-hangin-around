@@ -42,3 +42,27 @@ Added script to use for testing the algorithm I have and by using that, I'm goin
 
 **Ending**
 * Algorithm will make guess by choosing random word from the remaining words
+
+## Results
+Algorithm was basically just changed so that it executes main loop until only one word remains and it did surprisingly well. Did a lot of refactoring of the code as well but sadly it didn't affect the performance at all.
+
+### 8 character words
+- Success rate: 99.77%
+- Failed 10 / 5643 words
+
+#### Failed words
+'HUOVUTUS', 'HYLLYKKÖ', 'HYPPYNEN', 'YÖTÖN YÖ', 'PYÖRÖPUU', 'PÖLLÖNEN', 'HARJANNE', 'MUUNTELU', 'KOLMONEN', 'ROPPONEN'
+
+### 7 character words
+- Success rate: 98.83%
+- Failed 47 / 4343 words
+
+#### Failed words
+'MAHAVYÖ,','JONOTUS','JOROTUS','JULUPPI','JÄÄNNÖS','JÄÄTELÖ','JÖPÖTYS','RÄTVÄNÄ','MERSAWA','VIEMÄRI','MOLOTUS','MUSUKKI','MÖKÖTYS','XÂRÂCÙÙ','B-DUURI','YÖPÖLLÖ','B-MOLLI','BUNTŠUK','ÖLJYPUU','C-DUURI','SLOWFOX','SLUUPPI','NUKUPUU','NUORUUS','DISPARI','KLÖNTTI','F-DUURI','FIMOOSI','F-MOLLI','PERKELE','PERKELE','KUUPÖLY','GIBBONI','KYYHKYT','KYYNÄRÄ','TERVEYS','PINSERI','POM-POM','POROTUS','PUMPULI','TUNGPUU','HURJUUS','TYHMYRI','PYSÄKKI','HYPPYRI','TYÖKYKY','PÖKKELÖ'
+
+### 6 character words
+- Success rate: 96.05%
+- Failed 129 / 3389 words
+
+#### Failed words
+'TRYMOO','KELVIN','VAGHUA','PLYYMI','PLÄKKI','KOMEDO','POLTOS','POLTTO','POMELO','KOOKOS','BABUZA','KOOLON','KOOSTO','PONCHO','POPPOO','PORROT','PORTTO','POTERO','KORSTO','BICHON','KOSMOS','KOSSOT','BINOMI','PROFFA','BLONDI','PRUNNI','BLOSSI','BLUFFI','BLÄÄGÄ','BOLERO','VENÄJÄ','PUHURI','BONOBO','BORŠTŠ','BREVIS','BUNDIS','CHINOS','CONTRA','PYLVÄS','COWBOY','KURSSI','PYÖKKI','DEMONI','PÄRSTÄ','PÄÄRLY','PÄÄRME','VOODOO','PÖLLÖT','PÖNKKÄ','DIRNDL','PÖNTTÖ','DIVEHI','QUELLI','KYHÄRI','VÄLKKÄ','VÄLPPÄ','VÄRKKI','DREENI','VÄÄNTÖ','DUELLI','KÄMPPÄ','EEMELI','EFENDI','KÄÄNTÖ','ÄÄNNÖS','LEMMIÖ','LEMURI','RYNNÄS','FLOORA','RÄÄKKI','RÄÄPPÄ','FRENDI','RÄÄTTI','RÖMPSÄ','FYNBOS','FÄDÄRI','FÄGÄRI','FÄRSSI','FÖNÄRI','GIGOLO','GUELFI','GÖÖTTI','HALAUS','LUUPPI','LÄHÄRI','SFÄÄRI','LÄMÄRI','LÄÄKIS','LÖRPPÖ','LÖÖPPI','HEMPPO','HEPULI','HEŠVÁN','HINKKI','HORROS','HUHMAR','MILJÖÖ','SOLJOT','MOGULI','HYYPPÄ','SOTKOS','HÄKÄRÄ','HÄMÄRÄ','HÄRKIN','HÄRKKI','HÖMPPÄ','HÖMPSY','HÖNTSÄ','HÖRPPY','HÖRTSÖ','MYRTTI','MÄNNYT','MÄYRIS','ŠUNTTI','SYDÄRI','NELSON','JEEPPI','JENKKI','JEPARI','JOHDOS','JULPPI','NORKKO','JURUMI','JYMINÄ','JÄKÄLÄ','JÄLKKÄ','JÄRKKÄ','NYRKKI','OBADJA'
